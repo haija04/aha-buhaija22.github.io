@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Contact Information</title>
+<link rel="stylesheet" href="style.css">
+
+<script>
+function validateForm(){
+var name = document.forms["contactForm"]["name"].value;
+var email = document.forms["contactForm"]["email"].value;
+var country = document.forms["contactForm"]["country"].value;
+var comment = document.forms["contactForm"]["comment"].value;
+if(name=="" || email=="" || country=="" || comment=="")
+{
+alert("Please fill all fields before submitting.");
+return false;
+}
+alert("Form submitted successfully!");
+return true;
+}
+</script>
+</head>
+<body>
+<nav>
+<a href="index.html">Home</a>
+<a href="contact.html">Contact Information</a>
+</nav>
+<h1>Contact Information</h1>
+<form name="contactForm" onsubmit="return validateForm()">
+<label>Full
