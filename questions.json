@@ -1,0 +1,83 @@
+[
+  {
+    "question": "How do I upload homework on Moodle?",
+    "answer": "Go to your course page and upload your file."
+  },
+  {
+    "question": "How do I submit assignment?",
+    "answer": "Open the assignment and upload your solution."
+  },
+  {
+    "question": "How do I register my courses?",
+    "answer": "Log in to the registration system and choose your courses."
+  },
+  {
+    "question": "How do I contact my instructor?",
+    "answer": "You can contact your instructor through email or the course portal."
+  },
+  {
+    "question": "How do I check my attendance?",
+    "answer": "Use the student portal or ask your course instructor."
+  },
+  {
+    "question": "How can I reset my university password?",
+    "answer": "Use the university portal password reset page."
+  },
+  {
+    "question": "How can I change my password?",
+    "answer": "Go to the account settings page and choose change password."
+  },
+  {
+    "question": "How can I download lecture slides?",
+    "answer": "Open the course page and download the lecture materials."
+  },
+  {
+    "question": "Where can I see my grades?",
+    "answer": "You can check your grades from the student portal."
+  },
+  {
+    "question": "Where do I find exam dates?",
+    "answer": "Check the academic calendar or your course announcements."
+  },
+
+  {
+    "question": "كيف أسلم الواجب؟",
+    "answer": "افتح الواجب وارفع الحل."
+  },
+  {
+    "question": "كيف أرفع الواجب على مودل؟",
+    "answer": "ادخل للمساق وارفع الملف."
+  },
+  {
+    "question": "كيف أسجل المواد؟",
+    "answer": "ادخل إلى نظام التسجيل واختر المواد المطلوبة."
+  },
+  {
+    "question": "كيف أتواصل مع الدكتور؟",
+    "answer": "يمكنك التواصل معه عبر البريد الإلكتروني أو بوابة المساق."
+  },
+  {
+    "question": "كيف أعرف نسبة الغياب؟",
+    "answer": "من بوابة الطالب أو من خلال الدكتور."
+  },
+  {
+    "question": "كيف أغير كلمة سر الجامعة؟",
+    "answer": "استخدم صفحة إعادة تعيين كلمة المرور."
+  },
+  {
+    "question": "كيف أغير كلمة المرور؟",
+    "answer": "اذهب إلى إعدادات الحساب ثم اختر تغيير كلمة المرور."
+  },
+  {
+    "question": "كيف أنزل ملفات المحاضرات؟",
+    "answer": "افتح صفحة المساق ونزّل ملفات المحاضرات."
+  },
+  {
+    "question": "أين أستطيع رؤية علاماتي؟",
+    "answer": "يمكنك رؤية العلامات من بوابة الطالب."
+  },
+  {
+    "question": "أين أجد مواعيد الامتحانات؟",
+    "answer": "افتح التقويم الأكاديمي أو إعلانات المساق."
+  }
+]
