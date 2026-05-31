@@ -6,15 +6,16 @@ import json
 import re
 
 app = FastAPI()
-
 model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+
+class PostItem(BaseModel):
+    id: int
+    question: str
+    answer: str | None = None
 
 class QuestionRequest(BaseModel):
     question: str
-
-def load_questions():
-    with open("questions.json", "r", encoding="utf-8") as f:
-        return json.load(f)
+    posts: list[PostItem] = []
 
 def clean_text(text):
     text = text.lower()
@@ -27,29 +28,21 @@ def get_similarity_label(score):
         return "high"
     elif score >= 0.70:
         return "medium"
-    else:
-        return "low"
-
-def build_message(matches):
-    if len(matches) == 0:
-        return "لم نجد أسئلة مشابهة."
-    elif matches[0]["similarity_level"] == "high":
-        return "وجدنا أسئلة مشابهة جدًا."
-    else:
-        return "وجدنا بعض الأسئلة المشابهة."
+    return "low"
 
 def build_status(matches):
     if len(matches) == 0:
         return "no_match"
-    elif matches[0]["similarity_level"] == "high":
+    if matches[0]["similarity_level"] == "high":
         return "strong_match"
-    else:
-        return "possible_match"
+    return "possible_match"
 
-def get_best_match(matches):
+def build_message(matches):
     if len(matches) == 0:
-        return None
-    return matches[0]
+        return "لم نجد أسئلة مشابهة."
+    if matches[0]["similarity_level"] == "high":
+        return "وجدنا أسئلة مشابهة جدًا."
+    return "وجدنا بعض الأسئلة المشابهة."
 
 def get_post_decision(matches):
     if len(matches) == 0:
@@ -65,19 +58,17 @@ def get_post_decision(matches):
             "can_post": False,
             "decision_reason": "السؤال مكرر جدًا، لا حاجة لنشره."
         }
-    elif best["score"] >= 0.70:
-        return {
-            "can_post": True,
-            "decision_reason": "يوجد سؤال مشابه، لكن يمكن للمستخدم النشر إذا أراد."
-        }
-    else:
-        return {
-            "can_post": True,
-            "decision_reason": "لا يوجد تشابه قوي، يمكن نشر السؤال."
-        }
 
-def find_similar(new_question, old_questions, threshold=0.60, top_k=5):
-    old_texts = [clean_text(q["question"]) for q in old_questions]
+    return {
+        "can_post": True,
+        "decision_reason": "يوجد سؤال مشابه، لكن يمكن للمستخدم النشر إذا أراد."
+    }
+
+def find_similar(new_question, posts, threshold=0.60, top_k=5):
+    if len(posts) == 0:
+        return []
+
+    old_texts = [clean_text(post.question) for post in posts]
 
     new_emb = model.encode([clean_text(new_question)])
     old_emb = model.encode(old_texts)
@@ -89,8 +80,9 @@ def find_similar(new_question, old_questions, threshold=0.60, top_k=5):
         if score >= threshold:
             rounded_score = round(float(score), 3)
             matches.append({
-                "question": old_questions[i]["question"],
-                "answer": old_questions[i]["answer"],
+                "id": posts[i].id,
+                "question": posts[i].question,
+                "answer": posts[i].answer,
                 "score": rounded_score,
                 "similarity_level": get_similarity_label(rounded_score)
             })
@@ -104,11 +96,10 @@ def home():
 
 @app.post("/check")
 def check(data: QuestionRequest):
-    questions = load_questions()
-    matches = find_similar(data.question, questions)
-    best_match = get_best_match(matches)
+    matches = find_similar(data.question, data.posts)
+    best_match = matches[0] if len(matches) > 0 else None
     suggested_answer = best_match["answer"] if best_match else None
-    post_decision = get_post_decision(matches)
+    decision = get_post_decision(matches)
 
     return {
         "new_question": clean_text(data.question),
@@ -118,6 +109,6 @@ def check(data: QuestionRequest):
         "suggested_answer": suggested_answer,
         "matches": matches,
         "total_matches": len(matches),
-        "can_post": post_decision["can_post"],
-        "decision_reason": post_decision["decision_reason"]
+        "can_post": decision["can_post"],
+        "decision_reason": decision["decision_reason"]
     }
